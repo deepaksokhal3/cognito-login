@@ -432,6 +432,19 @@ class CognitoClient
         $this->userPoolId = $userPoolId;
     }
 
+
+public function logout($accessToken)
+    {
+     try {
+            $response = $this->client->globalSignOutAsync([
+                'AccessToken' => $accessToken, // REQUIRED
+            ]);
+            return $response;
+        } catch (Exception $e) {
+            throw CognitoResponseException::createFromCognitoException($e);
+        }
+    }
+
     /**
      * @param string $accessToken
      * @return array

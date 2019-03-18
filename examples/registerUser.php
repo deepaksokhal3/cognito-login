@@ -1,14 +1,13 @@
 <?php
 /** @var \pmill\AwsCognito\CognitoClient $client */
-$client = require(__DIR__ . '/bootstrap.php');
+$client = require __DIR__ . '/bootstrap.php';
 
-$password = 'Pass1worD';
-$email = 'test@example.com';
+$password = 'Ashok!123';
+$email = 'ashoka326@gmail.com';
 $username = $email;
 
 $client->registerUser($username, $password, [
-    'email' => $email,
+	'email' => $email,
 ]);
 
 //Your email address should receive an email with a confirmation code, run confirmUserRegistration.php next with your code
-

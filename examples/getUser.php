@@ -1,13 +1,14 @@
 <?php
 /** @var \pmill\AwsCognito\CognitoClient $client */
-$client = require(__DIR__ . '/bootstrap.php');
+$client = require __DIR__ . '/bootstrap.php';
 
-$username = 'test@example.com';
+$username = 'ashoka326@gmail.com';
 
 try {
-    $user = $client->getUser($username);
-    echo $user['Username'].PHP_EOL;
-    var_dump($user['UserAttributes']);
+	$user = $client->getUser($username);
+	echo $user['Username'] . PHP_EOL;
+	echo '<pre>';
+	print_r($user['UserAttributes']);
 } catch (Exception $e) {
-    echo "An error occurred: ".$e->getMessage();
+	echo "An error occurred: " . $e->getMessage();
 }
