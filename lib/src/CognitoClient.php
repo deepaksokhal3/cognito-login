@@ -441,6 +441,7 @@ public function logout($accessToken)
             $response = $this->client->globalSignOutAsync([
                 'AccessToken' => $accessToken, // REQUIRED
             ]);
+             session_destroy();
             return $response;
         } catch (Exception $e) {
             throw CognitoResponseException::createFromCognitoException($e);
@@ -548,6 +549,29 @@ public function logout($accessToken)
 
         return base64_encode($hash);
     }
+
+    /**
+     * @param array $response
+     * @return array
+     * @throws ChallengeException
+     * @throws Exception
+     */
+    public function poolclient(){
+        try{
+            return $this->client->listUsers([
+            'UserPoolId' => $this->userPoolId,
+        ]);
+        }catch(Exception $e){
+            return $e->getAwsErrorMessage();
+        }
+    }
+
+    // public function deleteUserPoolClient(){
+    //   $result = $this->client->deleteUserAttributes([
+    //         'AccessToken' => '<string>', // REQUIRED
+    //         'UserAttributeNames' => ['ashok'], // REQUIRED
+    //     ]);
+    // }
 
     /**
      * @param array $response

@@ -7,25 +7,32 @@
 
     $client = require __DIR__ . '/lib/bootstrap.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
+    if(isset($_SESSION['AccessToken']) && $_SESSION['AccessToken'])
+        header("Location:".$_SERVER['TTP_ORIGIN']."/cognito-login/members.php");
 
     if(isset($_POST['submit'])):
       try {
             $authenticationResponse = $client->authenticate($_POST['username'], $_POST['pass']);
             if(!isset($authenticationResponse['AccessToken']))
-                $msg->error($response);
+                $msg->error($authenticationResponse);
             if(isset($authenticationResponse['AccessToken']))
-            $msg->success('login successfully! ');
+                $_SESSION["AccessToken"] = $authenticationResponse['AccessToken'];
+ 
 
         } catch (ChallengeException $e) {
             if ($e->getChallengeName() === CognitoClient::CHALLENGE_NEW_PASSWORD_REQUIRED) {
                 $authenticationResponse = $client->respondToNewPasswordRequiredChallenge($username, 'password_new', $e->getSession());
                 if(!isset($authenticationResponse['AccessToken']))
-                $msg->error($response);
+                    $msg->error($authenticationResponse);
+                if(isset($authenticationResponse['AccessToken']))
+                    $_SESSION["AccessToken"] = $authenticationResponse['AccessToken'];
             }
         } catch (PasswordResetRequiredException $e) {
             $msg->info('PASSWORD RESET REQUIRED');
         }  
     endif;
+
+
    
 ?>
 <div class="container">
