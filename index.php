@@ -15,8 +15,10 @@
             $authenticationResponse = $client->authenticate($_POST['username'], $_POST['pass']);
             if(!isset($authenticationResponse['AccessToken']))
                 $msg->error($authenticationResponse);
-            if(isset($authenticationResponse['AccessToken']))
+            if(isset($authenticationResponse['AccessToken'])){
                 $_SESSION["AccessToken"] = $authenticationResponse['AccessToken'];
+                header("Location:".$_SERVER['TTP_ORIGIN']."/cognito-login/members.php");
+            }
  
 
         } catch (ChallengeException $e) {
