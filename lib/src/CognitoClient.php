@@ -438,10 +438,14 @@ class CognitoClient
 public function logout($accessToken)
     {
      try {
+            // $response = $this->client->adminUserGlobalSignOut([
+            //     'UserPoolId' => $this->userPoolId, // REQUIRED
+            //     'Username' => 'ashok.programmers@gmail.com', // REQUIRED
+            // ]);
             $response = $this->client->globalSignOutAsync([
                 'AccessToken' => $accessToken, // REQUIRED
             ]);
-             session_destroy();
+             unset($_SESSION['AccessToken']);
             return $response;
         } catch (Exception $e) {
             throw CognitoResponseException::createFromCognitoException($e);
@@ -558,9 +562,13 @@ public function logout($accessToken)
      */
     public function poolclient(){
         try{
-            return $this->client->listUsers([
-            'UserPoolId' => $this->userPoolId,
-        ]);
+            if(isset($_SESSION['AccessToken'])){
+                return $this->client->listUsers([
+                    'UserPoolId' => $this->userPoolId,
+                ]);
+            }else{
+               return false; 
+            }
         }catch(Exception $e){
             return $e->getAwsErrorMessage();
         }

@@ -8,7 +8,7 @@
     $client = require __DIR__ . '/lib/bootstrap.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
     if(isset($_SESSION['AccessToken']) && $_SESSION['AccessToken'])
-        header("Location:".$_SERVER['TTP_ORIGIN']."/cognito-login/members.php");
+        header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login/members.php");
 
     if(isset($_POST['submit'])):
       try {
@@ -17,7 +17,7 @@
                 $msg->error($authenticationResponse);
             if(isset($authenticationResponse['AccessToken'])){
                 $_SESSION["AccessToken"] = $authenticationResponse['AccessToken'];
-                header("Location:".$_SERVER['TTP_ORIGIN']."/cognito-login/members.php");
+                header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login/members.php");
             }
  
 

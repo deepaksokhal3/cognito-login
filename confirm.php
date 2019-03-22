@@ -7,7 +7,7 @@
         if($response):
             $msg->error($response);
         else:
-            header("Location:".$_SERVER['TTP_ORIGIN']."/cognito-login");
+            header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login");
         endif; 
     endif
 ?>
@@ -42,7 +42,7 @@
                     </form>
                 </article>
                 <!-- card-body end .// -->
-                <div class="border-top card-body text-center">Have an account? <a href="<?= $_RVER['TTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
+                <div class="border-top card-body text-center">Have an account? <a href="<?= $_RVER['HTTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
             </div>
             <!-- card.// -->
         </div>

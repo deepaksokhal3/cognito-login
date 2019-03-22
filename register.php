@@ -10,7 +10,7 @@
             if($response):
                 $msg->error($response);
             else:
-                header("Location:".$_SERVER['TTP_ORIGIN']."/cognito-login/confirm.php");
+                header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login/confirm.php");
             endif;   
         }
    

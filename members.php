@@ -1,8 +1,4 @@
 <?php include('view/common/header.php'); 
-
- // if(!$_SESSION)
- //  header("Location:".$_SERVER['TTP_ORIGIN']."/cognito-login");
-
     $client = require __DIR__ . '/lib/bootstrap.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
 	try {
@@ -39,13 +35,19 @@
                                 <?=  $user['UserStatus'] ?>
                             </td>
                         </tr>
-                        <?php endforeach; endif;?>
+                        <?php endforeach; 
+                    else:
+                        echo '<tr><td>Please login</td></tr>';
+                    endif;?>
                 </tbody>
             </table>
+            <?php 
+            if($user): ?>
             <div class="row col-md-12">
-            	<a class="btn btn-primary btn-block text-center" href="<?= $_RVER['TTP_ORIGIN']."/cognito-login/logout.php"?>" style="color: #ffffff;">Logout</a>
-	        <a class="btn btn-danger btn-block text-center" href="<?= $_RVER['TTP_ORIGIN']."/cognito-login/delete.php"?>" style="color: #ffffff;">Delete</a>
+            	<a class="btn btn-primary btn-block text-center" href="<?= $_RVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>" style="color: #ffffff;">Logout</a>
+	        <a class="btn btn-danger btn-block text-center" href="<?= $_RVER['HTTP_ORIGIN']."/cognito-login/delete.php"?>" style="color: #ffffff;">Delete</a>
 	        </div>
+        <?php endif; ?>
     </div>
     <!--container end.//-->
     <?php  include('view/common/footer.php'); ?>
