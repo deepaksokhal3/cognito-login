@@ -47,7 +47,9 @@
             	<a class="btn btn-primary btn-block text-center" href="<?= $_RVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>" style="color: #ffffff;">Logout</a>
 	        <a class="btn btn-danger btn-block text-center" href="<?= $_RVER['HTTP_ORIGIN']."/cognito-login/delete.php"?>" style="color: #ffffff;">Delete</a>
 	        </div>
-        <?php endif; ?>
+        <?php else:?>
+            <div class="border-top card-body text-center">Have an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
+       <?php endif; ?>
     </div>
     <!--container end.//-->
     <?php  include('view/common/footer.php'); ?>

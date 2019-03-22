@@ -1,6 +1,4 @@
 <?php include('view/common/header.php'); 
-
-
     use pmill\AwsCognito\CognitoClient;
     use pmill\AwsCognito\Exception\ChallengeException;
     use pmill\AwsCognito\Exception\PasswordResetRequiredException;
@@ -66,7 +64,7 @@
                     </form>
                 </article>
                 <!-- card-body end .// -->
-                <div class="border-top card-body text-center">Create an account? <a href="<?= $_RVER['TTP_ORIGIN']."/cognito-login/register.php"?>">Sign Up</a></div>
+                <div class="border-top card-body text-center">Create an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/register.php"?>">Sign Up</a></div>
             </div>
             <!-- card.// -->
         </div>

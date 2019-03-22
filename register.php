@@ -45,7 +45,7 @@
                             </form>
                     </article>
                     <!-- card-body end .// -->
-                    <div class="border-top card-body text-center">Have an account? <a href="<?= $_RVER['TTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
+                    <div class="border-top card-body text-center">Have an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
                 </div>
                 <!-- card.// -->
             </div>
