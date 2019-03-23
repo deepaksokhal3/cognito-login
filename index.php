@@ -5,7 +5,7 @@
 
     $client = require __DIR__ . '/lib/bootstrap.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
-    if(isset($_SESSION['AccessToken']) && $_SESSION['AccessToken'])
+    if($client->is_logged())
         header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login/members.php");
 
     if(isset($_POST['submit'])):

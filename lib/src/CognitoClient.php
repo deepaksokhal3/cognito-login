@@ -438,10 +438,6 @@ class CognitoClient
 public function logout($accessToken)
     {
      try {
-            // $response = $this->client->adminUserGlobalSignOut([
-            //     'UserPoolId' => $this->userPoolId, // REQUIRED
-            //     'Username' => 'ashok.programmers@gmail.com', // REQUIRED
-            // ]);
             $response = $this->client->globalSignOutAsync([
                 'AccessToken' => $accessToken, // REQUIRED
             ]);
@@ -574,12 +570,9 @@ public function logout($accessToken)
         }
     }
 
-    // public function deleteUserPoolClient(){
-    //   $result = $this->client->deleteUserAttributes([
-    //         'AccessToken' => '<string>', // REQUIRED
-    //         'UserAttributeNames' => ['ashok'], // REQUIRED
-    //     ]);
-    // }
+    public function is_logged(){
+       return  isset($_SESSION['AccessToken'])?true:false;
+    }
 
     /**
      * @param array $response

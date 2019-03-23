@@ -44,8 +44,8 @@
             <?php 
             if($user): ?>
             <div class="row col-md-12">
-            	<a class="btn btn-primary btn-block text-center" href="<?= $_RVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>" style="color: #ffffff;">Logout</a>
-	        <a class="btn btn-danger btn-block text-center" href="<?= $_RVER['HTTP_ORIGIN']."/cognito-login/delete.php"?>" style="color: #ffffff;">Delete</a>
+            	<a class="btn btn-primary btn-block text-center" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>" style="color: #ffffff;">Logout</a>
+	        <a class="btn btn-danger btn-block text-center" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/delete.php"?>" style="color: #ffffff;">Delete</a>
 	        </div>
         <?php else:?>
             <div class="border-top card-body text-center">Have an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
