@@ -236,6 +236,7 @@ class CognitoClient
                 'AccessToken' => $accessToken,
             ]);
         } catch (CognitoIdentityProviderException $e) {
+            return $e->getAwsErrorMessage();
             throw CognitoResponseException::createFromCognitoException($e);
         }
     }
@@ -561,7 +562,7 @@ public function logout($accessToken)
     public function poolclient(){
         try{
             if(isset($_SESSION['AccessToken'])){
-                $this->client->listUsers([
+                return $this->client->listUsers([
                     'UserPoolId' => $this->userPoolId,
                 ]);
             }else{

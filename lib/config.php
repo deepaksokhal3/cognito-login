@@ -2,12 +2,12 @@
 // copy this file to config.php
 return [
 	'credentials' => [
-		'key' => 'AKIAJUIGD23FTO4AWCDA',
-		'secret' => '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',
+		'key' => 'AKIAIJPZSKFDRKRBIEKQ',
+		'secret' => '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',
 	],
 	'region' => 'ap-south-1',
 	'version' => 'latest',
-	'app_client_id' => '75dhpalqg47c0b7tt2l6mk7bp8',
-	'app_client_secret' => 'hs50m02k8mp74i5oksh2qkhs3qta7j75ffo14c3a80hvt4qmg2u',
-	'user_pool_id' => 'ap-south-1_30G8nuOfN',
+	'app_client_id' => '523c62hdi3l10chv1hbns1opvb',
+	'app_client_secret' => 't679v6qrgppomfikf25p8o7gunt43pm26642qc7b3nmon5rnta6',
+	'user_pool_id' => 'ap-south-1_kRBCf8rFM',
 ];
