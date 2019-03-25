@@ -348,7 +348,7 @@ class CognitoClient
     public function resetPassword($confirmationCode, $username, $proposedPassword)
     {
         try {
-            $this->client->confirmForgotPassword([
+           return $this->client->confirmForgotPassword([
                 'ClientId' => $this->appClientId,
                 'ConfirmationCode' => $confirmationCode,
                 'Password' => $proposedPassword,
@@ -356,6 +356,7 @@ class CognitoClient
                 'Username' => $username,
             ]);
         } catch (CognitoIdentityProviderException $e) {
+            return $e->getAwsErrorMessage();
             throw CognitoResponseException::createFromCognitoException($e);
         }
     }
@@ -384,12 +385,13 @@ class CognitoClient
     public function sendForgottenPasswordRequest($username)
     {
         try {
-            $this->client->forgotPassword([
+           return  $this->client->forgotPassword([
                 'ClientId' => $this->appClientId,
                 'SecretHash' => $this->cognitoSecretHash($username),
                 'Username' => $username,
             ]);
         } catch (CognitoIdentityProviderException $e) {
+            return $e->getAwsErrorMessage();
             throw CognitoResponseException::createFromCognitoException($e);
         }
     }
@@ -559,7 +561,7 @@ public function logout($accessToken)
     public function poolclient(){
         try{
             if(isset($_SESSION['AccessToken'])){
-                return $this->client->listUsers([
+                $this->client->listUsers([
                     'UserPoolId' => $this->userPoolId,
                 ]);
             }else{

@@ -65,6 +65,7 @@
                 </article>
                 <!-- card-body end .// -->
                 <div class="border-top card-body text-center">Create an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/register.php"?>">Sign Up</a></div>
+                 <div class="border-top card-body text-center"><a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/forgotPassword.php"?>">Reset Password</a></div>
             </div>
             <!-- card.// -->
         </div>

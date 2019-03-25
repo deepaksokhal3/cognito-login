@@ -1,5 +1,8 @@
 <?php include('view/common/header.php'); 
     $client = require __DIR__ . '/lib/bootstrap.php';
+     // $groups = $client->getGroupsForUsername('ashok.programmers@gmail.com');
+     // echo '<pre>';
+     // print_r($groups);die;
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
 	try {
 		$user = $client->poolclient();
@@ -18,6 +21,7 @@
                         <th>Email</th>
                         <th>Created At</th>
                         <th>Status</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,6 +37,9 @@
                             </td>
                             <td>
                                 <?=  $user['UserStatus'] ?>
+                            </td>
+                             <td>
+                              <i class="fa fa-trash" style="cursor: pointer;"></i>
                             </td>
                         </tr>
                         <?php endforeach; 
