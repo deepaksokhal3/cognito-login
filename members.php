@@ -1,14 +1,23 @@
 <?php include('view/common/header.php'); 
     $client = require __DIR__ . '/lib/bootstrap.php';
-     // $groups = $client->getGroupsForUsername('ashok.programmers@gmail.com');
-     // echo '<pre>';
-     // print_r($groups);die;
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
-	try {
-		$user = $client->poolclient();
-	} catch (Exception $e) {
-		$msg->error("An error occurred: " . $e->getMessage());
-	}
+	
+    if(isset($_GET['uid'])){
+        try{
+            $res = $client->deleteUser($_GET['uid']);
+            if(!is_string($res))
+                $msg->success("User deleted successfully.");
+            else
+                $msg->error($res);
+        }catch(Exception $e){
+            $msg->error("An error occurred: " . $e->getMessage());
+        }
+    }
+    try {
+        $user = $client->poolclient();
+    } catch (Exception $e) {
+        $msg->error("An error occurred: " . $e->getMessage());
+    }
   ?>
     <div class="container">
         <br/>
@@ -39,7 +48,7 @@
                                 <?=  $user['UserStatus'] ?>
                             </td>
                              <td>
-                              <i class="fa fa-trash" style="cursor: pointer;"></i>
+                              <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/members.php?uid='.$user['Username']?>"><i class="fa fa-trash" ></i></a>
                             </td>
                         </tr>
                         <?php endforeach; 
@@ -52,7 +61,6 @@
             if($user): ?>
             <div class="row col-md-12">
             	<a class="btn btn-primary btn-block text-center" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>" style="color: #ffffff;">Logout</a>
-	        <a class="btn btn-danger btn-block text-center" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/delete.php"?>" style="color: #ffffff;">Delete</a>
 	        </div>
         <?php else:?>
             <div class="border-top card-body text-center">Have an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login"?>">Log In</a></div>

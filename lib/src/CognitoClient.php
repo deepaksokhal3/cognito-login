@@ -227,13 +227,12 @@ class CognitoClient
      * @throws TokenExpiryException
      * @throws TokenVerificationException
      */
-    public function deleteUser($accessToken)
+    public function deleteUser($username)
     {
-        $this->verifyAccessToken($accessToken);
-
         try {
-            $this->client->deleteUser([
-                'AccessToken' => $accessToken,
+            return $this->client->adminDeleteUser([
+                'UserPoolId' => $this->userPoolId, // REQUIRED
+                'Username' => $username, // REQUIRED
             ]);
         } catch (CognitoIdentityProviderException $e) {
             return $e->getAwsErrorMessage();
