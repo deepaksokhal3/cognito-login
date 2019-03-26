@@ -2,8 +2,8 @@
 // copy this file to config.php
 return [
 	'credentials' => [
-		'key' => 'AKIAIJPZSKFDRKRBIEKQ',
-		'secret' => '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',
+		'key' => '',
+		'secret' => '',
 	],
 	'region' => 'ap-south-1',
 	'version' => 'latest',
