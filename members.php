@@ -22,7 +22,7 @@
     <div class="container">
         <br/>
         <br/>
-        <h2> AWS USERS POOL CLIENT`S</h2>
+        <h2> AWS USERS POOL CLIENT`S <a class="float-right" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/changePassword.php"?>"><small><i class="fa fa-key" aria-hidden="true"></i>Change Password</a></small></h2>
         <?php  $msg->display(); ?>
             <table class="table">
                 <thead>

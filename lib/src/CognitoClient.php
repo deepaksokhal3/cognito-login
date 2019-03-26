@@ -170,15 +170,15 @@ class CognitoClient
     public function changePassword($accessToken, $previousPassword, $proposedPassword)
     {
         $this->verifyAccessToken($accessToken);
-
         try {
-            $this->client->changePassword([
+           return $this->client->changePassword([
                 'AccessToken' => $accessToken,
                 'PreviousPassword' => $previousPassword,
                 'ProposedPassword' => $proposedPassword,
             ]);
-        } catch (CognitoIdentityProviderException $e) {
-            throw CognitoResponseException::createFromCognitoException($e);
+
+        } catch (Exception $e) {
+            return $e->getMessage();
         }
     }
 
@@ -335,7 +335,6 @@ class CognitoClient
             return $response['UserSub'];
         } catch (CognitoIdentityProviderException $e) {
             return $e->getAwsErrorMessage();
-            // throw CognitoResponseException::createFromCognitoException($e->getAwsErrorMessage());
         }
     }
 
