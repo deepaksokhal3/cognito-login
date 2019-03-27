@@ -14,7 +14,7 @@
         }
     }
     try {
-        $user = $client->poolclient();
+        $users = $client->buildAdminFormatedObject($client->poolclient());
     } catch (Exception $e) {
         $msg->error("An error occurred: " . $e->getMessage());
     }
@@ -35,11 +35,11 @@
                 </thead>
                 <tbody>
                     <?php 
-				    	if(isset($user['Users'])):
-				    	foreach ($user['Users'] as $key => $user):?>
+				    	if($users):
+				    	foreach ($users as $key => $user):?>
                         <tr>
                             <td>
-                                <?=  $user['Attributes'][2]['Value'] ?>
+                                <?=  $user['email'] ?>
                             </td>
                             <td>
                                 <?=  $user['UserCreateDate']->format('d M,Y') ?>
@@ -48,17 +48,18 @@
                                 <?=  $user['UserStatus'] ?>
                             </td>
                              <td>
+                                <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/profile.php?uid='.$user['Username']?>"><i class="fa fa-edit" ></i></a>
                               <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/members.php?uid='.$user['Username']?>"><i class="fa fa-trash" ></i></a>
                             </td>
                         </tr>
                         <?php endforeach; 
                     else:
-                        echo '<tr><td>Please login</td></tr>';
+                        echo '<tr><td>No Records Found</td></tr>';
                     endif;?>
                 </tbody>
             </table>
             <?php 
-            if($user): ?>
+            if(isset($_SESSION['AccessToken'])): ?>
             <div class="row col-md-12">
             	<a class="btn btn-primary btn-block text-center" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>" style="color: #ffffff;">Logout</a>
 	        </div>

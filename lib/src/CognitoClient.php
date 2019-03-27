@@ -211,11 +211,10 @@ class CognitoClient
     public function getUser($username)
     {
         try {
-            $response = $this->client->adminGetUser([
+            return $this->client->adminGetUser([
                 'Username' => $username,
                 'UserPoolId' => $this->userPoolId,
             ]);
-            return $response;
         } catch (Exception $e) {
             throw CognitoResponseException::createFromCognitoException($e);
         }
@@ -267,7 +266,7 @@ class CognitoClient
         $userAttributes = $this->buildAttributesArray($attributes);
 
         try {
-            $this->client->adminUpdateUserAttributes([
+           return $this->client->adminUpdateUserAttributes([
                 'Username' => $username,
                 'UserPoolId' => $this->userPoolId,
                 'UserAttributes' => $userAttributes,
@@ -367,7 +366,7 @@ class CognitoClient
     public function resendRegistrationConfirmationCode($username)
     {
         try {
-            $this->client->resendConfirmationCode([
+           return $this->client->resendConfirmationCode([
                 'ClientId' => $this->appClientId,
                 'SecretHash' => $this->cognitoSecretHash($username),
                 'Username' => $username,
@@ -608,5 +607,38 @@ public function logout($accessToken)
             ];
         }
         return $userAttributes;
+    }
+
+    /**
+     *@param Aws\Result Object
+    */
+    public function buildFormatedObject($userArray){
+       
+        $userAttributes['Username'] = $userArray['Username'];
+        $userAttributes['UserCreateDate'] = $userArray['UserCreateDate'];
+        $userAttributes['UserStatus'] = $userArray['UserStatus'];
+        foreach ($userArray['UserAttributes'] as $key => $value) {
+           $userAttributes[$value['Name']] = $value['Value'];
+            
+        }
+        return $userAttributes;
+    }
+
+     /**
+     *@param Aws\Result Object
+    */
+    public function buildAdminFormatedObject($userArray){
+        foreach ($userArray['Users'] as $key => $user) {
+        
+            $userAttributes['Username'] = $user['Username'];
+            $userAttributes['UserCreateDate'] = $user['UserCreateDate'];
+            $userAttributes['UserStatus'] = $user['UserStatus'];
+            foreach ($user['Attributes'] as $key => $value) {
+               $userAttributes[$value['Name']] = $value['Value'];
+                
+            }
+            $adminUserAttributes[] = $userAttributes;
+        }
+        return $adminUserAttributes;
     }
 }

@@ -7,6 +7,7 @@
        $response =  $client->registerUser($_POST['email'], $_POST['pass'], [
             'email' => $_POST['email'],
         ]);
+            $_SESSION['username'] = $_POST['email'];
             if($response):
                 $msg->error($response);
             else:

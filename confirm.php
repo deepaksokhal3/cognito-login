@@ -9,12 +9,16 @@
         else:
             header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login");
         endif; 
-    endif
+    endif;
+    if(isset($_GET['resend'])):
+        $client->resendRegistrationConfirmationCode($_GET['resend']);
+        $msg->success('We have sent confirmation code to email.');
+    endif;
+
 ?>
 <div class="container">
     <br>
     <br>
-
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
@@ -25,7 +29,7 @@
 
                         <div class="form-group">
                             <label>Email address / Username</label>
-                            <input type="email" name="email" class="form-control" placeholder="Email">
+                            <input type="email" name="email" class="form-control" value="<?= isset($_SESSION['username'])?$_SESSION['username']:'' ?>" placeholder="Email">
                         </div>
                         <!-- form-group end.// -->
 
@@ -43,6 +47,7 @@
                 </article>
                 <!-- card-body end .// -->
                 <div class="border-top card-body text-center">Have an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
+                <div class="border-top card-body text-center"> <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/confirm.php?resend=".$_SESSION['username']?>">Resend Code</a></div>
             </div>
             <!-- card.// -->
         </div>

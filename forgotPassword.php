@@ -27,6 +27,9 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
+                <div class="col form-group">
+                    <a class="float-right" href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login'?>"><i class="fa fa-home"></i></a>
+                </div>
                 <article class="card-body">
                     <?php  $msg->display(); ?>
                     <?php if(!$entercode){ ?>
