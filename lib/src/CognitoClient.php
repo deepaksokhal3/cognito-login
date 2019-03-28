@@ -333,7 +333,40 @@ class CognitoClient
 
             return $response['UserSub'];
         } catch (CognitoIdentityProviderException $e) {
-            return $e->getAwsErrorMessage();
+            $response['error'] = $e->getAwsErrorMessage();
+            return $response;
+        }
+    }
+
+    /**
+     * @param string $username
+     * @throws Exception
+     */
+
+    public function disableUser($username){
+        try{
+            return $this->client->adminDisableUser([
+                'UserPoolId' => $this->userPoolId, // REQUIRED
+                'Username' => $username, // REQUIRED
+            ]);
+        }catch(Exception $e){
+            return $e->getMessage();
+        }
+    }
+
+    /**
+     * @param string $username
+     * @throws Exception
+     */
+
+    public function enableUser($username){
+        try{
+            return $this->client->adminEnableUser([
+                'UserPoolId' => $this->userPoolId, // REQUIRED
+                'Username' => $username, // REQUIRED
+            ]);
+        }catch(Exception $e){
+            return $e->getMessage();
         }
     }
 
@@ -610,35 +643,44 @@ public function logout($accessToken)
     }
 
     /**
-     *@param Aws\Result Object
+    * @param array $response
+    * @param Aws\Result Object
     */
     public function buildFormatedObject($userArray){
-       
-        $userAttributes['Username'] = $userArray['Username'];
-        $userAttributes['UserCreateDate'] = $userArray['UserCreateDate'];
-        $userAttributes['UserStatus'] = $userArray['UserStatus'];
-        foreach ($userArray['UserAttributes'] as $key => $value) {
-           $userAttributes[$value['Name']] = $value['Value'];
-            
-        }
-        return $userAttributes;
-    }
-
-     /**
-     *@param Aws\Result Object
-    */
-    public function buildAdminFormatedObject($userArray){
-        foreach ($userArray['Users'] as $key => $user) {
-        
-            $userAttributes['Username'] = $user['Username'];
-            $userAttributes['UserCreateDate'] = $user['UserCreateDate'];
-            $userAttributes['UserStatus'] = $user['UserStatus'];
-            foreach ($user['Attributes'] as $key => $value) {
+        try{
+            $userAttributes['Username'] = $userArray['Username'];
+            $userAttributes['UserCreateDate'] = $userArray['UserCreateDate'];
+            $userAttributes['UserStatus'] = $userArray['UserStatus'];
+            foreach ($userArray['UserAttributes'] as $key => $value) {
                $userAttributes[$value['Name']] = $value['Value'];
                 
             }
-            $adminUserAttributes[] = $userAttributes;
+            return $userAttributes;
+        }catch(Exception $e){
+
         }
-        return $adminUserAttributes;
+    }
+
+    /**
+    * @param array $response
+    * @param Aws\Result Object
+    */
+    public function buildAdminFormatedObject($userArray){
+        try{
+            foreach ($userArray['Users'] as $key => $user) {
+                $userAttributes['Enabled'] = (Boolean)$user['Enabled'];
+                $userAttributes['Username'] = $user['Username'];
+                $userAttributes['UserCreateDate'] = $user['UserCreateDate'];
+                $userAttributes['UserStatus'] = $user['UserStatus'];
+                foreach ($user['Attributes'] as $key => $value) {
+                   $userAttributes[$value['Name']] = $value['Value'];
+                    
+                }
+                $adminUserAttributes[] = $userAttributes;
+            }
+            return $adminUserAttributes;
+        }catch(Exception $e){
+
+        }
     }
 }
