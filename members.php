@@ -1,18 +1,30 @@
 <?php include('view/common/header.php'); 
     $client = require __DIR__ . '/lib/bootstrap.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
-	
-    if(isset($_GET['uid'])){
+
+    if(isset($_GET['uid']) && isset($_GET['action'])){
         try{
-            $res = $client->deleteUser($_GET['uid']);
+            if($_GET['action'] == 'delete'){  
+                $res = $client->deleteUser($_GET['uid']);
+                $txtMessage = 'User deleted successfully.';
+            }
+            else if($_GET['action'] == 'disable'){ // disable spacific user
+                $res =  $client->disableUser($_GET['uid']);
+                $txtMessage = 'User disable successfully.';
+            }
+            else if($_GET['action'] == 'enable'){ // enable spacific user
+                $res =  $client->enableUser($_GET['uid']);
+                $txtMessage = 'User enable successfully.';
+            }
             if(!is_string($res))
-                $msg->success("User deleted successfully.");
+                $msg->success($txtMessage);
             else
                 $msg->error($res);
         }catch(Exception $e){
             $msg->error("An error occurred: " . $e->getMessage());
         }
     }
+
     try {
         $users = $client->buildAdminFormatedObject($client->poolclient());
     } catch (Exception $e) {
@@ -36,7 +48,10 @@
                 <tbody>
                     <?php 
 				    	if($users):
-				    	foreach ($users as $key => $user):?>
+				    	foreach ($users as $key => $user):
+                            $action = $user['Enabled']?'disable':'enable';
+                            $icon = $user['Enabled']?'lock-open':'lock';
+                            ?>
                         <tr>
                             <td>
                                 <?=  $user['email'] ?>
@@ -49,7 +64,8 @@
                             </td>
                              <td>
                                 <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/profile.php?uid='.$user['Username']?>"><i class="fa fa-edit" ></i></a>
-                              <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/members.php?uid='.$user['Username']?>"><i class="fa fa-trash" ></i></a>
+                              <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/members.php?action=delete&uid='.$user['Username']?>"><i class="fa fa-trash" ></i></a>
+                              <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/members.php?action='.$action.'&uid='.$user['Username']?>"><i class="fa fa-<?= $icon?>" ></i></a>
                             </td>
                         </tr>
                         <?php endforeach; 

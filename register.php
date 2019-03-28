@@ -1,20 +1,18 @@
 <?php include('view/common/header.php'); 
-
+    use csrfhandler\csrf as csrf;
     $client = require __DIR__ . '/lib/bootstrap.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
-
-    if(isset($_POST['submit'])){
+    if(isset($_POST['submit']) && csrf::post()){
        $response =  $client->registerUser($_POST['email'], $_POST['pass'], [
             'email' => $_POST['email'],
         ]);
             $_SESSION['username'] = $_POST['email'];
-            if($response):
-                $msg->error($response);
+            if(isset($response['error'])):
+                $msg->error($response['error']);
             else:
                 header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login/confirm.php");
             endif;   
         }
-   
 ?>
     <div class="container">
         <br>
@@ -26,6 +24,7 @@
                     <article class="card-body">
                         <?php  $msg->display(); ?>
                             <form action="" method="post">
+                                <input type="hidden" name="_token" value="<?php echo csrf::token()?>">
                                 <!-- form-group end.// -->
                                 <div class="form-group">
                                     <label>Email address</label>

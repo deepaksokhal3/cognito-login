@@ -2,13 +2,12 @@
     use pmill\AwsCognito\CognitoClient;
     use pmill\AwsCognito\Exception\ChallengeException;
     use pmill\AwsCognito\Exception\PasswordResetRequiredException;
-
+    use csrfhandler\csrf as csrf;
     $client = require __DIR__ . '/lib/bootstrap.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
     if($client->is_logged())
         header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login/members.php");
-
-    if(isset($_POST['submit'])):
+    if(isset($_POST['submit']) && csrf::post()):
       try {
             $authenticationResponse = $client->authenticate($_POST['username'], $_POST['pass']);
             if(!isset($authenticationResponse['AccessToken']))
@@ -44,7 +43,7 @@
                 <article class="card-body">
                     <?php  $msg->display(); ?>
                     <form action="" method="post">
-
+                    <input type="hidden" name="_token" value="<?php echo csrf::token()?>">
                         <div class="form-group">
                             <label>Email address / Username</label>
                             <input type="email" name="username" class="form-control" placeholder="">
