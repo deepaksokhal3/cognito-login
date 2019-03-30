@@ -133,6 +133,25 @@ class CognitoClient
         );
     }
 
+   /**
+     * @param string return
+     * @return string
+     * @throws Exception
+     */
+    public function createGroup($name, $description)
+    {
+        try {
+            return $this->client->createGroup([
+                'Description' => $description,
+                'GroupName' => $name, // REQUIRED
+                'UserPoolId' => $this->userPoolId, // REQUIRED
+            ]);
+        } catch (CognitoIdentityProviderException $e) {
+            return $e->getAwsErrorMessage();
+        }
+    }
+
+
     /**
      * @param string $username
      * @param string $refreshToken
@@ -246,7 +265,7 @@ class CognitoClient
      */
     public function addUserToGroup($username, $groupName) {
         try {
-            $this->client->adminAddUserToGroup([
+           return $this->client->adminAddUserToGroup([
                 'UserPoolId' => $this->userPoolId,
                 'Username' => $username,
                 "GroupName" => $groupName
@@ -391,6 +410,26 @@ class CognitoClient
             throw CognitoResponseException::createFromCognitoException($e);
         }
     }
+
+
+     /**
+     * @param string $groupName
+     * @param string return
+     * @throws Exception
+     */
+    public function getListUsersInGroup($groupName)
+    {
+        try {
+            return $this->client->listUsersInGroup([
+                'GroupName' => $groupName, // REQUIRED
+                'UserPoolId' => $this->userPoolId, // REQUIRED
+            ]);
+        } catch (CognitoIdentityProviderException $e) {
+            return $e->getAwsErrorMessage();
+            throw CognitoResponseException::createFromCognitoException($e);
+        }
+    }
+  
 
     /**
      * @param string $username
@@ -546,6 +585,50 @@ public function logout($accessToken)
     {
         return $this->hash($username . $this->appClientId);
     }
+
+
+
+    /**
+     * @param $username
+     *
+     * @return \Aws\Result
+     * @throws Exception
+     */
+    public function getGroups()
+    {
+        try {
+            if(isset($_SESSION['AccessToken'])){
+                return $this->client->listGroups([
+                    'UserPoolId' => $this->userPoolId, // REQUIRED
+                ]);
+            }
+        } catch (Exception $e) {
+            throw CognitoResponseException::createFromCognitoException($e);
+        }
+
+    }
+
+
+
+    /**
+     * @param $groupName
+     *
+     * @return \Aws\Result
+     * @throws Exception
+     */
+    public function deleteGroup($groupName)
+    {
+        try {
+             return $this->client->deleteGroup([
+                'GroupName' => $groupName, // REQUIRED
+                'UserPoolId' => $this->userPoolId, // REQUIRED
+            ]);
+        } catch (CognitoIdentityProviderException $e) {
+            return $e->getAwsErrorMessage();
+        }
+
+    }
+   
 
     /**
      * @param $username

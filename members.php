@@ -1,7 +1,7 @@
 <?php include('view/common/header.php'); 
     $client = require __DIR__ . '/lib/bootstrap.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
-
+        $groups = $client->getGroups();
     if(isset($_GET['uid']) && isset($_GET['action'])){
         try{
             if($_GET['action'] == 'delete'){  
@@ -34,7 +34,15 @@
     <div class="container">
         <br/>
         <br/>
-        <h2> AWS USERS POOL CLIENT`S <a class="float-right" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/changePassword.php"?>"><small><i class="fa fa-key" aria-hidden="true"></i>Change Password</a></small></h2>
+        <h2> AWS USERS POOL CLIENT`S </h2>
+        <div class="col-md-12">
+        <?php  if(isset($_SESSION['AccessToken'])): ?>
+            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>"><small><i class="fa fa-power-off"></i>Logout</small></a>
+
+            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/changePassword.php"?>"><small><i class="fa fa-key" aria-hidden="true"></i>Change Password</small></a>
+            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/createGroup.php"?>"><small><i class="fa fa-plus" aria-hidden="true"></i>Create Group</small></a>
+        <?php endif;?>
+        </div>
         <?php  $msg->display(); ?>
             <table class="table">
                 <thead>
@@ -74,14 +82,50 @@
                     endif;?>
                 </tbody>
             </table>
-            <?php 
-            if(isset($_SESSION['AccessToken'])): ?>
-            <div class="row col-md-12">
-            	<a class="btn btn-primary btn-block text-center" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>" style="color: #ffffff;">Logout</a>
-	        </div>
-        <?php else:?>
+            <?php if(isset($groups['Groups']) && !empty($groups['Groups'])):?>
+            <h2> GROUP'S </h2>
+             <table class="table">
+                <thead>
+                    <tr>
+                        <th>Group Name</th>
+                        <th>Description</th>
+                        <th>Precedence</th>
+                        <th>Updated</th>
+                        <th>Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php 
+                        foreach ($groups['Groups'] as $key => $group):?>
+                        <tr id="group-<?=  $group['GroupName'] ?>">
+                            <td>
+                                <?=  $group['GroupName'] ?>
+                            </td>
+                            <td>
+                                <?=  $group['Description'] ?>
+                            </td>
+                            <td> - </td>
+                            <td>
+                                <?=  $group['LastModifiedDate']->format('d M,Y h:i a') ?>
+                            </td>
+                            <td>
+                                <?=  $group['CreationDate']->format('d M,Y h:i a') ?>
+                            </td>
+                             <td>
+                                <a href="javascript:;" data-toggle="modal" data-target=".bd-example-modal-lg" onclick="getUserInGroup('<?= $group['GroupName']?>')"><i class="fa fa-users" ></i></a>
+                              <a href="javascript:;" onclick="deleteGroup('<?=  $group['GroupName'] ?>')"><i class="fa fa-trash" ></i></a>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php  endif; if(!isset($_SESSION['AccessToken'])): ?>
             <div class="border-top card-body text-center">Have an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
-       <?php endif; ?>
+       <?php endif;
+       include('view/modal/addUserToGroup.php'); 
+        ?>
     </div>
+
     <!--container end.//-->
     <?php  include('view/common/footer.php'); ?>
