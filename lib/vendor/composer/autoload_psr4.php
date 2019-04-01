@@ -18,5 +18,5 @@ return array(
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'FG\\' => array($vendorDir . '/fgrosse/phpasn1/lib'),
     'Base64Url\\' => array($vendorDir . '/spomky-labs/base64url/src'),
-    'Aws\\' => array($vendorDir . '/aws/aws-sdk-php/src'),
+    'Aws\\' => array($baseDir . '/src', $vendorDir . '/aws/aws-sdk-php/src'),
 );

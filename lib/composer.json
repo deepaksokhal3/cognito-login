@@ -16,7 +16,7 @@
     "plasticbrain/php-flash-messages": "^1.0"
   },
   "autoload": {
-    "psr-4": {"pmill\\AwsCognito\\": "src/"},
+    "psr-4": {"pmill\\AwsCognito\\": "src/","Aws\\":"src/"},
     "psr-0": {"csrfhandler": "src/"}
   }
 }

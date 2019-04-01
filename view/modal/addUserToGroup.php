@@ -24,7 +24,7 @@
                           $action = $user['Enabled']?'disable':'enable';
                           $icon = $user['Enabled']?'lock-open':'lock';
                           ?>
-                      <tr id="<?= $user['Username']?>">
+                      <tr id="out<?= $user['Username']?>">
                         <td><a id="<?= 'link'.$user['Username']?>" href="javascript:;"  onclick="addUserInGroup('<?= $user['Username']?>')"><i class="fa fa-plus-circle"></i></a></td>
                           <td>
                               <?=  $user['email'] ?>

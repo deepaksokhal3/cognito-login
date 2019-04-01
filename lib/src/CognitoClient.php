@@ -1,6 +1,5 @@
 <?php
 namespace pmill\AwsCognito;
-
 use Aws\CognitoIdentityProvider\CognitoIdentityProviderClient;
 use Aws\CognitoIdentityProvider\Exception\CognitoIdentityProviderException;
 use Exception;
@@ -133,6 +132,18 @@ class CognitoClient
         );
     }
 
+
+    // function getRoleArn(){
+    //    $iAm = new IamClient([
+    //         'profile' => 'default',
+    //         'region' => 'ap-south-1',
+    //     ]);
+    //    $result = $iAm->listRolePolicies([
+    //             'RoleName' => 'loginpool-SMS-Role', // REQUIRED
+    //         ]);
+    //    echo '<pre>';
+    //    print_r($result);die;
+    // }
    /**
      * @param string return
      * @return string
@@ -643,10 +654,22 @@ public function logout($accessToken)
                 'UserPoolId' => $this->userPoolId,
                 'Username'   => $username
             ]);
-        } catch (Exception $e) {
+        } catch (CognitoIdentityProviderException $e) {
             throw CognitoResponseException::createFromCognitoException($e);
         }
 
+    }
+
+    public function getUserGroup($groupName){
+        try {
+         $this->client->getGroup([
+                'GroupName' => $groupName, // REQUIRED
+                'UserPoolId' => $this->userPoolId, // REQUIRED
+            ]);
+         return true;
+        } catch (CognitoIdentityProviderException $e) {
+             return false;
+        }
     }
 
     /**
@@ -681,10 +704,31 @@ public function logout($accessToken)
             }else{
                return false; 
             }
-        }catch(Exception $e){
+        }catch(CognitoIdentityProviderException $e){
             return $e->getAwsErrorMessage();
         }
     }
+
+    /**
+     * @param array $response
+     * @return array
+     * @throws ChallengeException
+     * @throws Exception
+     */
+    public function removeUserFromGroup($groupname,$username){
+        try{
+           return $this->client->adminRemoveUserFromGroup([
+                'GroupName' => $groupname, // REQUIRED
+                'UserPoolId' => $this->userPoolId, // REQUIRED
+                'Username' => $username, // REQUIRED
+            ]);
+        }catch(CognitoIdentityProviderException $e){
+            return $e->getAwsErrorMessage();
+        }
+    }
+
+
+
 
     public function is_logged(){
        return  isset($_SESSION['AccessToken'])?true:false;

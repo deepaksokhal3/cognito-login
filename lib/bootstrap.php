@@ -4,7 +4,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 if (!session_id()) @session_start();
 $config = require(__DIR__ . '/config.php');
 $aws = new \Aws\Sdk($config);
-
 $cognitoClient = $aws->createCognitoIdentityProvider();
 
 $client = new \pmill\AwsCognito\CognitoClient($cognitoClient);

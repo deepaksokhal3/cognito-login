@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0a4ce7fc2115a34a2189656ccbc0a1c8",
+    "hash": "ba15b0b849c04844dd00705c2494ba80",
     "content-hash": "4919bb09febe836cd5769bb836a4af85",
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.90.12",
+            "version": "3.90.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "a628927d3a350fbda308eadea88d9d4845aa1c44"
+                "reference": "69d688e81420d623270aa8f5103ac20032685675"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/a628927d3a350fbda308eadea88d9d4845aa1c44",
-                "reference": "a628927d3a350fbda308eadea88d9d4845aa1c44",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/69d688e81420d623270aa8f5103ac20032685675",
+                "reference": "69d688e81420d623270aa8f5103ac20032685675",
                 "shasum": ""
             },
             "require": {
@@ -87,7 +87,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2019-03-28 18:10:49"
+            "time": "2019-03-29 18:42:16"
         },
         {
             "name": "fgrosse/phpasn1",
