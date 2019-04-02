@@ -17,6 +17,7 @@
   },
   "autoload": {
     "psr-4": {"pmill\\AwsCognito\\": "src/","Aws\\":"src/"},
-    "psr-0": {"csrfhandler": "src/"}
+    "psr-0": {"csrfhandler": "src/"},
+    "files": ["Helper.php"]
   }
 }

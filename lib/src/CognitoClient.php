@@ -296,7 +296,7 @@ class CognitoClient
         $userAttributes = $this->buildAttributesArray($attributes);
 
         try {
-           return $this->client->adminUpdateUserAttributes([
+            return $this->client->adminUpdateUserAttributes([
                 'Username' => $username,
                 'UserPoolId' => $this->userPoolId,
                 'UserAttributes' => $userAttributes,
@@ -409,7 +409,7 @@ class CognitoClient
     public function resetPassword($confirmationCode, $username, $proposedPassword)
     {
         try {
-           return $this->client->confirmForgotPassword([
+            return $this->client->confirmForgotPassword([
                 'ClientId' => $this->appClientId,
                 'ConfirmationCode' => $confirmationCode,
                 'Password' => $proposedPassword,
@@ -449,7 +449,7 @@ class CognitoClient
     public function resendRegistrationConfirmationCode($username)
     {
         try {
-           return $this->client->resendConfirmationCode([
+            return $this->client->resendConfirmationCode([
                 'ClientId' => $this->appClientId,
                 'SecretHash' => $this->cognitoSecretHash($username),
                 'Username' => $username,
@@ -466,7 +466,7 @@ class CognitoClient
     public function sendForgottenPasswordRequest($username)
     {
         try {
-           return  $this->client->forgotPassword([
+            return  $this->client->forgotPassword([
                 'ClientId' => $this->appClientId,
                 'SecretHash' => $this->cognitoSecretHash($username),
                 'Username' => $username,
@@ -520,7 +520,7 @@ class CognitoClient
 
 public function logout($accessToken)
     {
-     try {
+    try{
             $response = $this->client->globalSignOutAsync([
                 'AccessToken' => $accessToken, // REQUIRED
             ]);
@@ -640,6 +640,23 @@ public function logout($accessToken)
 
     }
    
+    /**
+     * @param $username
+     *
+     * @return \Aws\Result
+     * @throws Exception
+     */
+       public function checkUserExistInGroup($username){
+             try {
+                 $this->client->adminListGroupsForUser([
+                    'UserPoolId' => $this->userPoolId,
+                    'Username'   => $username
+                ]);
+                return true;
+            } catch (CognitoIdentityProviderException $e) {
+                return false;
+            }
+       }
 
     /**
      * @param $username
@@ -662,11 +679,11 @@ public function logout($accessToken)
 
     public function getUserGroup($groupName){
         try {
-         $this->client->getGroup([
+            $this->client->getGroup([
                 'GroupName' => $groupName, // REQUIRED
                 'UserPoolId' => $this->userPoolId, // REQUIRED
             ]);
-         return true;
+            return true;
         } catch (CognitoIdentityProviderException $e) {
              return false;
         }
@@ -717,7 +734,7 @@ public function logout($accessToken)
      */
     public function removeUserFromGroup($groupname,$username){
         try{
-           return $this->client->adminRemoveUserFromGroup([
+            return $this->client->adminRemoveUserFromGroup([
                 'GroupName' => $groupname, // REQUIRED
                 'UserPoolId' => $this->userPoolId, // REQUIRED
                 'Username' => $username, // REQUIRED
