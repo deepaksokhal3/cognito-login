@@ -132,18 +132,6 @@ class CognitoClient
         );
     }
 
-
-    // function getRoleArn(){
-    //    $iAm = new IamClient([
-    //         'profile' => 'default',
-    //         'region' => 'ap-south-1',
-    //     ]);
-    //    $result = $iAm->listRolePolicies([
-    //             'RoleName' => 'loginpool-SMS-Role', // REQUIRED
-    //         ]);
-    //    echo '<pre>';
-    //    print_r($result);die;
-    // }
    /**
      * @param string return
      * @return string
@@ -332,6 +320,7 @@ class CognitoClient
      */
     protected function downloadJwtWebKeys()
     {
+
         $url = sprintf(
             'https://cognito-idp.%s.amazonaws.com/%s/.well-known/jwks.json',
             $this->region,
@@ -679,11 +668,10 @@ public function logout($accessToken)
 
     public function getUserGroup($groupName){
         try {
-            $this->client->getGroup([
+            return $this->client->getGroup([
                 'GroupName' => $groupName, // REQUIRED
                 'UserPoolId' => $this->userPoolId, // REQUIRED
             ]);
-            return true;
         } catch (CognitoIdentityProviderException $e) {
              return false;
         }
