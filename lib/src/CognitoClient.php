@@ -666,6 +666,7 @@ public function logout($accessToken)
 
     }
 
+
     public function getUserGroup($groupName){
         try {
              $this->client->getGroup([
