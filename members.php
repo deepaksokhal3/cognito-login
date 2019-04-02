@@ -2,7 +2,15 @@
     $client = require __DIR__ . '/lib/bootstrap.php';
     require 'Helper.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
-    var_dump(is_group('demo-group'));// check group exist 
+    
+
+        if(is_group('demo-group')){
+            echo 'yes';
+        }else{
+            echo 'No';
+        }
+
+
     $groups = $client->getGroups();   
     if(isset($_GET['uid']) && isset($_GET['action'])){
         try{
