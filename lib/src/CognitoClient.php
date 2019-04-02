@@ -668,10 +668,11 @@ public function logout($accessToken)
 
     public function getUserGroup($groupName){
         try {
-            return $this->client->getGroup([
+             $this->client->getGroup([
                 'GroupName' => $groupName, // REQUIRED
                 'UserPoolId' => $this->userPoolId, // REQUIRED
             ]);
+             return true;
         } catch (CognitoIdentityProviderException $e) {
              return false;
         }
