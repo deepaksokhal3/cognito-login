@@ -1,10 +1,15 @@
 <?php include('view/common/header.php'); 
     $client = require __DIR__ . '/lib/bootstrap.php';
-    require 'Helper.php';
+    // require 'Helper.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
-    
 
-        if(is_group('demo-group')){
+        if(is_user_exist('eef5c392-2705-45f8-a30a-e358226b04e2')){
+            echo 'yes';
+        }else{
+            echo 'No';
+        }
+
+        if(is_user_exist('ashoka326@gmail.com')){
             echo 'yes';
         }else{
             echo 'No';
