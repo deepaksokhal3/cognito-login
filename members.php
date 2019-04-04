@@ -2,12 +2,6 @@
     $client = require __DIR__ . '/lib/bootstrap.php';
     // require 'Helper.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
-        if(is_user_exist('eef5c392-2705-45f8-a30a-e358226b04e2','demo-group')){  // This is user id if user exist in group it say yes
-            echo 'yes';
-        }else{
-            echo 'No';
-        }
-
     $groups = $client->getGroups();   
     if(isset($_GET['uid']) && isset($_GET['action'])){
         try{
@@ -44,7 +38,7 @@
         <h2> AWS USERS POOL CLIENT`S </h2>
         <div class="col-md-12">
         <?php  if(isset($_SESSION['AccessToken'])): ?>
-            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/logout.php"?>"><small><i class="fa fa-power-off"></i>Logout</small></a>
+            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/logout"?>"><small><i class="fa fa-power-off"></i>Logout</small></a>
 
             <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/changePassword.php"?>"><small><i class="fa fa-key" aria-hidden="true"></i>Change Password</small></a>
             <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/createGroup.php"?>"><small><i class="fa fa-plus" aria-hidden="true"></i>Create Group</small></a>
