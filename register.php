@@ -10,7 +10,7 @@
             if(isset($response['error'])):
                 $msg->error($response['error']);
             else:
-                header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login/confirm.php");
+                header("Location:".$_SERVER['HTTP_ORIGIN']."/cognito-login/confirm");
             endif;   
         }
 ?>
@@ -45,7 +45,7 @@
                             </form>
                     </article>
                     <!-- card-body end .// -->
-                    <div class="border-top card-body text-center">Have an account? <a href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login"?>">Log In</a></div>
+                    <div class="border-top card-body text-center">Have an account? <a href="/cognito-login">Log In</a></div>
                 </div>
                 <!-- card.// -->
             </div>

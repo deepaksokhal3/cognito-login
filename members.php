@@ -40,8 +40,8 @@
         <?php  if(isset($_SESSION['AccessToken'])): ?>
             <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/logout"?>"><small><i class="fa fa-power-off"></i>Logout</small></a>
 
-            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/changePassword.php"?>"><small><i class="fa fa-key" aria-hidden="true"></i>Change Password</small></a>
-            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/createGroup.php"?>"><small><i class="fa fa-plus" aria-hidden="true"></i>Create Group</small></a>
+            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/change-password"?>"><small><i class="fa fa-key" aria-hidden="true"></i>Change Password</small></a>
+            <a class="float-right btn" href="<?= $_SERVER['HTTP_ORIGIN']."/cognito-login/add-group"?>"><small><i class="fa fa-plus" aria-hidden="true"></i>Create Group</small></a>
         <?php endif;?>
         </div>
         <?php  $msg->display(); ?>
@@ -72,9 +72,9 @@
                                 <?=  $user['UserStatus'] ?>
                             </td>
                              <td>
-                                <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/profile.php?uid='.$user['Username']?>"><i class="fa fa-edit" ></i></a>
-                              <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/members.php?action=delete&uid='.$user['Username']?>"><i class="fa fa-trash" ></i></a>
-                              <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/members.php?action='.$action.'&uid='.$user['Username']?>"><i class="fa fa-<?= $icon?>" ></i></a>
+                                <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/edit?uid='.$user['Username']?>"><i class="fa fa-edit" ></i></a>
+                              <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/delete?action=delete&uid='.$user['Username']?>"><i class="fa fa-trash" ></i></a>
+                              <a href="<?= $_SERVER['HTTP_ORIGIN'].'/cognito-login/enable?action='.$action.'&uid='.$user['Username']?>"><i class="fa fa-<?= $icon?>" ></i></a>
                             </td>
                         </tr>
                         <?php endforeach; 

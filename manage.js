@@ -26,7 +26,7 @@ function getUserInGroup(groupName){
 			}
 	    }
 	};
-	xhttp.open("GET", "/cognito-login/usersInGroup.php?gp="+groupName, true);
+	xhttp.open("GET", "/cognito-login/get-user-in-group?gp="+groupName, true);
 	xhttp.send();
 }
 
@@ -39,7 +39,7 @@ function addUserInGroup(userName){
 	    		getUserInGroup(globalGroupName);
 	    }
 	};
-	xhttp.open("GET", "/cognito-login/addUserToGroup.php?gp="+globalGroupName+"&uid="+userName, true);
+	xhttp.open("GET", "/cognito-login/add-user-in-group?gp="+globalGroupName+"&uid="+userName, true);
 	xhttp.send();
 }
 
@@ -51,7 +51,7 @@ function deleteGroup(groupName){
 	    		jQuery('#group-'+groupName).remove();	
 	    }
 	};
-	xhttp.open("GET", "/cognito-login/deleteGroup.php?gp="+groupName, true);
+	xhttp.open("GET", "/cognito-login/delete-group?gp="+groupName, true);
 	xhttp.send();
 }
 
@@ -65,7 +65,7 @@ function removeUserFromGroup(userName){
 	    		
 	    }
 	};
-	xhttp.open("GET", "/cognito-login/removeUserFromGroup.php?gp="+globalGroupName+"&uid="+userName, true);
+	xhttp.open("GET", "/cognito-login/remove-user-from-group?gp="+globalGroupName+"&uid="+userName, true);
 	xhttp.send();
 }
 
