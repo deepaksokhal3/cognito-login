@@ -6,6 +6,16 @@ function is_group($groupname){
      return $client->getUserGroup($groupname);
 }
 
+function auth(){
+
+	$client = require 'bootstrap.php';
+	try{
+     return (object)$client->buildFormatedObject($client->getCurrentUser($_SESSION['AccessToken']));
+	}catch(Exception $e){
+		return $e->getMessage();
+	}
+}
+
 function is_user_exist($username, $groupname){
 	$client = require 'bootstrap.php';
 	try{

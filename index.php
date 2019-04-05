@@ -25,53 +25,106 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
     });
 
     // Static route: / (login Page)
-    $router->get('/',  function () { require 'login.php';});
+    $router->get('/',  function () { 
+        $page_title = 'Login';
+        require 'login.php';});
 
-    $router->post('/',  function () { require 'login.php';});
+    $router->post('/',  function () { 
+        $page_title = 'Login';
+        require 'login.php';});
 
     // Static route: /members
-    $router->get('/members', function () { require 'members.php';});
+    $router->get('/members', function () {
+        $page_title = 'members';
+        require 'members.php';});
 
-    $router->post('/members', function () { require 'members.php';});
+    $router->post('/members', function () { 
+        $page_title = 'members';
+         require 'members.php';
+     });
 
-    $router->get('/delete', function () { require 'members.php';});
+    $router->get('/delete', function () { 
+        $page_title = 'members';
+        require 'members.php';
+    });
 
-    $router->get('/enable', function () { require 'members.php';});
+    $router->get('/enable', function () { 
+        $page_title = 'members';
+        require 'members.php';
+    });
 
      // Static route: /Register
-    $router->get('/sign-up', function () { require 'register.php';});
+    $router->get('/sign-up', function () {
+        $page_title = 'Register';
+        require 'register.php';
+    });
 
-    $router->post('/sign-up', function () { require 'register.php';});
+    $router->post('/sign-up', function () { 
+        $page_title = 'Register';
+        require 'register.php';
+    });
 
      // Static route: /members
-    $router->get('/forgot-password', function () { require 'forgotPassword.php';});
+    $router->get('/forgot-password', function () { 
+        $page_title = 'Forgot Password';
+        require 'forgotPassword.php';
+    });
 
-    $router->post('/forgot-password', function () { require 'forgotPassword.php';});
+    $router->post('/forgot-password', function () { 
+        $page_title = 'Forgot Password';
+        require 'forgotPassword.php';
+    });
 
      // Static route: /confirm Password
-    $router->get('/confirm', function () { require 'confirm.php';});
+    $router->get('/confirm', function () { 
+        $page_title = 'Confirm Account';
+        require 'confirm.php';
+    });
 
-    $router->post('/confirm', function () { require 'confirm.php';});
+    $router->post('/confirm', function () { 
+        $page_title = 'Confirm Account';
+        require 'confirm.php';
+    });
 
     // Static route: /Profile
-    $router->get('/edit', function () { require 'profile.php';});
+    $router->get('/edit', function () { 
+        $page_title = 'Profile';
+        require 'profile.php';
+    });
 
-    $router->post('/edit', function () { require 'profile.php';});
+    $router->post('/edit', function () { 
+        $page_title = 'Profile';
+        require 'profile.php';
+    });
 
 
       // Static route: /Profile Password
-    $router->get('/change-password', function () { require 'changePassword.php';});
+    $router->get('/change-password', function () { 
+        $page_title = 'Change Password';
+        require 'changePassword.php';
+    });
 
-    $router->post('/change-password', function () { require 'changePassword.php';});
+    $router->post('/change-password', function () { 
+        $page_title = 'Change Password';
+        require 'changePassword.php';
+    });
 
    // Static route: /Create Group
-    $router->get('/add-group', function () { require 'createGroup.php';});
+    $router->get('/add-group', function () { 
+        $page_title = 'User Group';
+        require 'createGroup.php';
+    });
 
-    $router->post('/add-group', function () { require 'createGroup.php';});
+    $router->post('/add-group', function () { 
+        $page_title = 'User Group';
+        require 'createGroup.php';
+    });
 
 
     // Static route: /Create Group
-    $router->get('/get-user-in-group', function () { require 'usersInGroup.php';});
+    $router->get('/get-user-in-group', function () { 
+        require 'usersInGroup.php';
+    });
 
     $router->get('/add-user-in-group', function () { require 'addUserToGroup.php';});
 
@@ -81,7 +134,10 @@ if (php_sapi_name() === 'cli-server' && is_file($filename)) {
 
 
     // Static route: /logout
-    $router->get('/logout', function () { require 'logout.php';});
+    $router->get('/logout', function () { 
+        $page_title = 'Logout';
+        require 'logout.php';
+    });
 
     // Thunderbirds are go!
     $router->run();

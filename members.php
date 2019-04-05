@@ -1,6 +1,5 @@
 <?php include('view/common/header.php'); 
     $client = require __DIR__ . '/lib/bootstrap.php';
-    // require 'Helper.php';
     $msg = new \Plasticbrain\FlashMessages\FlashMessages();
     $groups = $client->getGroups();   
     if(isset($_GET['uid']) && isset($_GET['action'])){

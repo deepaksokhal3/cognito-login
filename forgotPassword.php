@@ -68,7 +68,7 @@
                 </article>
                 <!-- card-body end .// -->
                 <div class="border-top card-body text-center">Create an account? <a href="/cognito-login">Sign In</a></div>
-            </div>
+            </div> 
             <!-- card.// -->
         </div>
         <!-- col.//-->

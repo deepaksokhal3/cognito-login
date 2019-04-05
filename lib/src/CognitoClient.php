@@ -220,6 +220,28 @@ class CognitoClient
         }
     }
 
+     /*
+     * @param string $username
+     * @return AwsResult
+     * @throws UserNotFoundException
+     * @throws CognitoResponseException
+     */
+    public function getCurrentUser($accessToken)
+    {
+        try {
+            if(isset($_SESSION['AccessToken'])):
+                return $this->client->getUser([
+                    'AccessToken' => $accessToken
+                ]);
+            else:
+                return (object)[];
+            endif;
+        } catch (Exception $e) {
+            return $e->getAwsErrorMessage();
+            throw CognitoResponseException::createFromCognitoException($e);
+        }
+    }
+
     /*
      * @param string $username
      * @return AwsResult
