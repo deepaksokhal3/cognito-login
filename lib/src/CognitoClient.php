@@ -234,7 +234,7 @@ class CognitoClient
                     'AccessToken' => $accessToken
                 ]);
             else:
-                return (object)[];
+                return[];
             endif;
         } catch (Exception $e) {
             return $e->getAwsErrorMessage();
