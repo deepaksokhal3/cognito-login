@@ -79,7 +79,10 @@ class CognitoClient
                 'ClientId' => $this->appClientId,
                 'UserPoolId' => $this->userPoolId,
             ]);
-            return $this->handleAuthenticateResponse($response->toArray());
+            $response =  $this->handleAuthenticateResponse($response->toArray());
+            $result = $this->buildFormatedObject($this->getCurrentUser($response['AccessToken']));
+            $_SESSION['sub_id'] = isset($result['sub'])? base64_encode($result['sub']):'';
+            return $response;
         } catch (CognitoIdentityProviderException $e) {
             return $e->getAwsErrorMessage();
             throw CognitoResponseException::createFromCognitoException($e);
@@ -229,13 +232,9 @@ class CognitoClient
     public function getCurrentUser($accessToken)
     {
         try {
-            if(isset($_SESSION['AccessToken'])):
-                return $this->client->getUser([
-                    'AccessToken' => $accessToken
-                ]);
-            else:
-                return[];
-            endif;
+            return $this->client->getUser([
+                'AccessToken' => $accessToken
+            ]);
         } catch (Exception $e) {
             return $e->getAwsErrorMessage();
             throw CognitoResponseException::createFromCognitoException($e);
@@ -536,6 +535,7 @@ public function logout($accessToken)
                 'AccessToken' => $accessToken, // REQUIRED
             ]);
              unset($_SESSION['AccessToken']);
+             unset($_SESSION['sub_id']);
             return $response;
         } catch (Exception $e) {
             throw CognitoResponseException::createFromCognitoException($e);

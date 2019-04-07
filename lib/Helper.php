@@ -16,6 +16,10 @@ function auth(){
 	}
 }
 
+function get_current_user_id(){
+	return  isset($_SESSION['sub_id'])? base64_decode($_SESSION['sub_id']):'';
+}
+
 function is_user_exist($username, $groupname){
 	$client = require 'bootstrap.php';
 	try{
