@@ -1,7 +1,5 @@
 <?php
- 
-
-function is_group($groupname){
+ function is_group($groupname){
 	$client = require 'bootstrap.php';
      return $client->getUserGroup($groupname);
 }
@@ -17,7 +15,8 @@ function auth(){
 }
 
 function get_current_user_id(){
-	return  isset($_SESSION['sub_id'])? base64_decode($_SESSION['sub_id']):'';
+	$client = require 'bootstrap.php';
+	return  isset($_SESSION['sub_id'])? $client->decript($_SESSION['sub_id']):'';
 }
 
 function is_user_exist($username, $groupname){

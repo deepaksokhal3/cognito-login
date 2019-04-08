@@ -13,7 +13,6 @@ use pmill\AwsCognito\Exception\ChallengeException;
 use pmill\AwsCognito\Exception\CognitoResponseException;
 use pmill\AwsCognito\Exception\TokenExpiryException;
 use pmill\AwsCognito\Exception\TokenVerificationException;
-
 class CognitoClient
 {
     const CHALLENGE_NEW_PASSWORD_REQUIRED = 'NEW_PASSWORD_REQUIRED';
@@ -39,6 +38,16 @@ class CognitoClient
     protected $jwtWebKeys;
 
     /**
+     * @var JWKSet
+     */
+    protected $hasKey;
+
+    /**
+     * @var JWKSet
+     */
+    protected $iv_size;
+
+    /**
      * @var string
      */
     protected $region;
@@ -56,6 +65,8 @@ class CognitoClient
     public function __construct(CognitoIdentityProviderClient $client)
     {
         $this->client = $client;
+        $this->hasKey = pack('H*', "bcb04b7e103a0cd8b54763051cef08bc55abe029fdebae5e1d417e2ffb2a00a3");
+        $this->iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
     }
 
     /**
@@ -81,7 +92,7 @@ class CognitoClient
             ]);
             $response =  $this->handleAuthenticateResponse($response->toArray());
             $result = $this->buildFormatedObject($this->getCurrentUser($response['AccessToken']));
-            $_SESSION['sub_id'] = isset($result['sub'])? base64_encode($result['sub']):'';
+            $_SESSION['sub_id'] = isset($result['sub'])? $this->encript($result['sub']):'';
             return $response;
         } catch (CognitoIdentityProviderException $e) {
             return $e->getAwsErrorMessage();
@@ -107,13 +118,37 @@ class CognitoClient
                 'ClientId' => $this->appClientId,
                 'Session' => $session,
             ]);
-
+            
             return $this->handleAuthenticateResponse($response->toArray());
         } catch (CognitoIdentityProviderException $e) {
             throw CognitoResponseException::createFromCognitoException($e);
         }
     }
 
+     /**
+     * @param string $string
+     * @param string $response
+     */
+    public function encript($sting){
+        $iv = mcrypt_create_iv($this->iv_size, MCRYPT_RAND);
+        $hash_enc = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $this->hasKey,
+                                     $sting, MCRYPT_MODE_CBC, $iv);
+        $hash_enc = $iv . $hash_enc;
+        return base64_encode($hash_enc);
+    } 
+
+    /**
+     * @param string $string
+     * @param string $response
+     */
+    public function decript($encoded){
+        $hash_dec = base64_decode($encoded);
+        $iv_dec = substr($hash_dec, 0, $this->iv_size);
+        $hash_dec = substr($hash_dec, $this->iv_size);
+        return  mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $this->hasKey,
+                                    $hash_dec, MCRYPT_MODE_CBC, $iv_dec);
+    }
+    
     /**
      * @param string $username
      * @param string $newPassword
