@@ -42,6 +42,16 @@ class CognitoClient
      */
     protected $hasKey;
 
+      /**
+     * @var JWKSet
+     */
+    protected $firstKey;
+
+     /**
+     * @var JWKSet
+     */
+    protected $secondKey;
+
 
     /**
      * @var string
@@ -62,6 +72,8 @@ class CognitoClient
     {
         $this->client = $client;
         $this->hasKey = 'AES-128-CBC';
+        $this->firstKey =  'Lk5Uz3slx3BrAghS1aaW5AYgWZRV0tIX5eI0yPchFz4=';
+        $this->secondKey =  'EZ44mFi3TlAey1b2w4Y7lVDuqO+SRxGXsa7nctnr/JmMrA2vN6EJhrvdVZbxaQs5jpSe34X3ejFK/o9+Y5c83w==';
     }
 
     /**
@@ -125,11 +137,17 @@ class CognitoClient
      * @param string $response
      */
     public function encript($sting){
-        $ivlen = openssl_cipher_iv_length($this->hasKey);
-        $iv = openssl_random_pseudo_bytes($ivlen);
-        $ciphertext_raw = openssl_encrypt($sting, $this->hasKey, $key, $options=OPENSSL_RAW_DATA, $iv);
-        $hmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
-        return base64_encode( $iv.$hmac.$ciphertext_raw );
+        $first_key = base64_decode($this->firstKey);
+        $second_key = base64_decode($this->secondKey);    
+            
+        $method = "aes-256-cbc";    
+        $iv_length = openssl_cipher_iv_length($method);
+        $iv = openssl_random_pseudo_bytes($iv_length);
+                
+        $first_encrypted = openssl_encrypt($sting,$method,$first_key, OPENSSL_RAW_DATA ,$iv);    
+        $second_encrypted = hash_hmac('sha3-512', $first_encrypted, $second_key, TRUE);
+                    
+        return base64_encode($iv.$second_encrypted.$first_encrypted); 
     } 
 
     /**
@@ -137,17 +155,22 @@ class CognitoClient
      * @param string $response
      */
     public function decript($encoded){
-        $c = base64_decode($encoded);
-        $ivlen = openssl_cipher_iv_length($this->hasKey);
-        $iv = substr($c, 0, $ivlen);
-        $hmac = substr($c, $ivlen, $sha2len=32);
-        $ciphertext_raw = substr($c, $ivlen+$sha2len);
-        $original_plaintext = openssl_decrypt($ciphertext_raw, $this->hasKey, $key, $options=OPENSSL_RAW_DATA, $iv);
-        $calcmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
-        if (hash_equals($hmac, $calcmac))
-        {
-            return  $original_plaintext;
-        }
+        $first_key = base64_decode($this->firstKey);
+        $second_key = base64_decode($this->secondKey);            
+        $mix = base64_decode($encoded);
+                
+        $method = "aes-256-cbc";    
+        $iv_length = openssl_cipher_iv_length($method);
+                    
+        $iv = substr($mix,0,$iv_length);
+        $second_encrypted = substr($mix,$iv_length,64);
+        $first_encrypted = substr($mix,$iv_length+64);
+                    
+        $data = openssl_decrypt($first_encrypted,$method,$first_key,OPENSSL_RAW_DATA,$iv);
+        $second_encrypted_new = hash_hmac('sha3-512', $first_encrypted, $second_key, TRUE);
+            
+        if (hash_equals($second_encrypted,$second_encrypted_new))
+        return $data;
     }
     
     /**
