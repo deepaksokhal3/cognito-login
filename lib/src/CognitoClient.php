@@ -42,10 +42,6 @@ class CognitoClient
      */
     protected $hasKey;
 
-    /**
-     * @var JWKSet
-     */
-    protected $iv_size;
 
     /**
      * @var string
@@ -65,8 +61,7 @@ class CognitoClient
     public function __construct(CognitoIdentityProviderClient $client)
     {
         $this->client = $client;
-        $this->hasKey = pack('H*', "bcb04b7e103a0cd8b54763051cef08bc55abe029fdebae5e1d417e2ffb2a00a3");
-        $this->iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_128, MCRYPT_MODE_CBC);
+        $this->hasKey = 'AES-128-CBC';
     }
 
     /**
@@ -130,11 +125,11 @@ class CognitoClient
      * @param string $response
      */
     public function encript($sting){
-        $iv = mcrypt_create_iv($this->iv_size, MCRYPT_RAND);
-        $hash_enc = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $this->hasKey,
-                                     $sting, MCRYPT_MODE_CBC, $iv);
-        $hash_enc = $iv . $hash_enc;
-        return base64_encode($hash_enc);
+        $ivlen = openssl_cipher_iv_length($this->hasKey);
+        $iv = openssl_random_pseudo_bytes($ivlen);
+        $ciphertext_raw = openssl_encrypt($sting, $this->hasKey, $key, $options=OPENSSL_RAW_DATA, $iv);
+        $hmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
+        return base64_encode( $iv.$hmac.$ciphertext_raw );
     } 
 
     /**
@@ -142,11 +137,17 @@ class CognitoClient
      * @param string $response
      */
     public function decript($encoded){
-        $hash_dec = base64_decode($encoded);
-        $iv_dec = substr($hash_dec, 0, $this->iv_size);
-        $hash_dec = substr($hash_dec, $this->iv_size);
-        return  mcrypt_decrypt(MCRYPT_RIJNDAEL_128, $this->hasKey,
-                                    $hash_dec, MCRYPT_MODE_CBC, $iv_dec);
+        $c = base64_decode($encoded);
+        $ivlen = openssl_cipher_iv_length($this->hasKey);
+        $iv = substr($c, 0, $ivlen);
+        $hmac = substr($c, $ivlen, $sha2len=32);
+        $ciphertext_raw = substr($c, $ivlen+$sha2len);
+        $original_plaintext = openssl_decrypt($ciphertext_raw, $this->hasKey, $key, $options=OPENSSL_RAW_DATA, $iv);
+        $calcmac = hash_hmac('sha256', $ciphertext_raw, $key, $as_binary=true);
+        if (hash_equals($hmac, $calcmac))
+        {
+            return  $original_plaintext;
+        }
     }
     
     /**
